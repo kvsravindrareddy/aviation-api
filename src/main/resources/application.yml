@@ -1,0 +1,18 @@
+server:
+  port: 9005
+
+aviation:
+  baseUrl: 'https://api.aviationapi.com/'
+
+spring:
+  datasource:
+    url: jdbc:postgresql://postgresql.c7kfiu7juhuv.ap-south-1.rds.amazonaws.com:5432/postgresql
+    username: postgresql
+    password: postgresql
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect

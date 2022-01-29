@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "aviation",
+      "type": "com.ravindra.config.AviationConfig",
+      "sourceType": "com.ravindra.config.AviationConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "aviation.base-url",
+      "type": "java.lang.String",
+      "sourceType": "com.ravindra.config.AviationConfig"
+    }
+  ],
+  "hints": []
+}
