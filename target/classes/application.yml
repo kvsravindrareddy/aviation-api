@@ -4,16 +4,8 @@ server:
 aviation:
   baseUrl: 'https://api.aviationapi.com/'
 
-cloud:
-  aws:
-    region:
-      static: ap-south-1
-    credentials:
-      access-key: AKIA5M3EST63DKO5MUNJ
-      secret-key: 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
-
 sftp:
-  host: test.rebex.net
+  host: test.rebex.net:22
   userName: demo
   password: password
   serverPath: /

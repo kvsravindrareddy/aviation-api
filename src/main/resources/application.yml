@@ -10,6 +10,11 @@ sftp:
   password: password
   serverPath: /
 
+windows:
+  url: smb://127.0.0.1/test/
+  userName: test
+  password: password
+
 s3:
   accessKey: AKIA5M3EST63DKO5MUNJ
   secretKey: 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

@@ -1,12 +1,12 @@
 package com.ravindra.service;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import com.ravindra.SFTPUtil;
+import com.ravindra.util.SFTPUtil;
 import com.ravindra.config.S3Config;
+import com.ravindra.util.WindowsSharedDriveUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +30,9 @@ public class S3Service {
     @Autowired
     private SFTPUtil sftpUtil;
 
+    @Autowired
+    private WindowsSharedDriveUtil windowsSharedDriveUtil;
+
     public String s3ObjectDownload(String s3FileName)
     {
         S3Object s3Object = amazonS3Client.getObject(s3Config.getBucket(),s3FileName+".txt");
@@ -39,7 +42,9 @@ public class S3Service {
             File localFile = File.createTempFile(s3FileName,"");
             // write S3Object stream into a temp file
             Files.copy(inputStream, localFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            //Switch either windows or sftp based on the requirement
             sftpUtil.copyFileToSftp(localFile);
+            windowsSharedDriveUtil.copyFileToWindosSharedPath(localFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

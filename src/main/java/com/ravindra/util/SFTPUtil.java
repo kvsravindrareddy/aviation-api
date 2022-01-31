@@ -1,4 +1,4 @@
-package com.ravindra;
+package com.ravindra.util;
 
 import com.ravindra.common.ApiConstants;
 import com.ravindra.config.SFTPConfig;
