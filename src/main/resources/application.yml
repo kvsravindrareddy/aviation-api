@@ -4,6 +4,18 @@ server:
 aviation:
   baseUrl: 'https://api.aviationapi.com/'
 
+sftp:
+  host: test.rebex.net
+  userName: demo
+  password: password
+  serverPath: /
+
+s3:
+  accessKey: AKIA5M3EST63DKO5MUNJ
+  secretKey: 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
+  region: ap-south-1
+  bucket: kvsrr2022
+
 spring:
   datasource:
     url: jdbc:postgresql://postgresql.c7kfiu7juhuv.ap-south-1.rds.amazonaws.com:5432/postgresql
