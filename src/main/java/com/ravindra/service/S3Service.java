@@ -36,13 +36,14 @@ public class S3Service {
         String bucket = path.substring(0,path.indexOf("/"));
         System.out.println("bucket name : "+bucket);
         String fileName = path.substring(path.indexOf("/")+1);
+        String fName = path.substring(path.lastIndexOf("/")+1);
         S3Object s3Object = amazonS3Client.getObject(bucket, fileName );
 //        ObjectMetadata objectMetadata = amazonS3Client.getObjectMetadata(s3Config.getBucket(), fileName);
 //        System.out.println("last modified.... " + objectMetadata.getLastModified());
         InputStream inputStream = s3Object.getObjectContent();
         //String s3FileName = "";
         try {
-            File localFile = File.createTempFile(fileName, "");
+            File localFile = File.createTempFile(fName, "");
             // write S3Object stream into a temp file
             Files.copy(inputStream, localFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             //Switch either windows or sftp based on the requirement
