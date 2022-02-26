@@ -27,6 +27,9 @@ s3:
   region: ap-south-1
   bucket: kvsrr2022
 
+
+aviation.milatary.landing.query: select * from aviation_tb where military_landing='Y'
+
 spring:
   datasource:
     url: jdbc:postgresql://postgresql.c7kfiu7juhuv.ap-south-1.rds.amazonaws.com:5432/postgresql

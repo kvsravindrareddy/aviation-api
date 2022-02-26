@@ -26,4 +26,10 @@ public class AviationRestController {
     {
         return aviationService.getAviationData(icao);
     }
+
+    @RequestMapping(value = "aviationsdata", method = RequestMethod.GET)
+    public List<AviationData> findAllFromDB()
+    {
+        return aviationService.getAllDataForMilataryLanding();
+    }
 }

@@ -1,8 +1,13 @@
 package com.ravindra.service;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ravindra.common.ApiConstants;
 import com.ravindra.config.AviationConfig;
 import com.ravindra.data.AviationData;
+import com.ravindra.entity.AviationEntity;
+import com.ravindra.mapper.AviationMapper;
+import com.ravindra.repo.AviationRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,6 +26,12 @@ public class AviationService {
     //private static final Logger log = LoggerFactory.getLogger(AviationService.class);
 
     @Autowired
+    private AviationMapper aviationMapper;
+
+    @Autowired
+    private AviationRepo aviationRepo;
+
+    @Autowired
     private AviationConfig aviationConfig;
 
     @Autowired
@@ -28,6 +39,7 @@ public class AviationService {
 
     /**
      * This is to get the AVI api response
+     *
      * @param icao
      * @return
      */
@@ -36,15 +48,14 @@ public class AviationService {
         List<AviationData> aviationDataList = null;
         //String url = aviationConfig.getBaseUrl()+"/v1/airports?apt="+icao;
         String url = buildAviationUrl(icao);//https://api.aviationapi.com/v1/airports?apt=KSPI
-        log.debug("Aviation Url : ",url);
+        log.debug("Aviation Url : ", url);
         String apiResponse = apiResponse(url);//json string
-        if(null!=apiResponse)
-        {
+        if (null != apiResponse) {
             aviationDataList = new ArrayList<>();
             JSONObject mainJsonObj = new JSONObject(apiResponse);
             JSONArray mainJsonArray = mainJsonObj.getJSONArray(icao.toUpperCase());
             AviationData aviationData = null;
-            for(Object genericObj : mainJsonArray) {
+            for (Object genericObj : mainJsonArray) {
                 aviationData = new AviationData();
                 JSONObject innerJsonObj = (JSONObject) genericObj;
                 aviationData.setSiteNumber(innerJsonObj.getString("site_number"));
@@ -58,11 +69,13 @@ public class AviationService {
                 aviationDataList.add(aviationData);
             }
         }
+        aviationRepo.saveAll(aviationMapper.aviationRequestListToEntityList(aviationDataList));
         return aviationDataList;
     }
 
     /**
      * This will consume the api and convert the response into json string
+     *
      * @param url
      * @return
      */
@@ -76,19 +89,29 @@ public class AviationService {
             } else {
                 log.warn("There is no response body");
             }
-        }catch (Exception e)
-        {
-            log.error("Exception occurred"+e.getMessage());
+        } catch (Exception e) {
+            log.error("Exception occurred" + e.getMessage());
         }
         return apiResponse;
     }
 
     /**
      * It uses URIComponent builder and convert the url as a string
+     *
      * @param icao
      * @return
      */
     private String buildAviationUrl(String icao) {
-        return UriComponentsBuilder.fromHttpUrl(aviationConfig.getBaseUrl()).path(ApiConstants.AVIATION_PATH).queryParam("apt",icao).build().toUriString();
+        return UriComponentsBuilder.fromHttpUrl(aviationConfig.getBaseUrl()).path(ApiConstants.AVIATION_PATH).queryParam("apt", icao).build().toUriString();
+    }
+
+
+    public List<AviationData> getAllDataForMilataryLanding() {
+        List<AviationEntity> aviationEntityList = aviationRepo.findByMilataryLanding();
+        Gson gson = new Gson();
+        String json = gson.toJson(aviationEntityList);
+        List<AviationData> aviationDataList = gson.fromJson(json,new TypeToken<List<AviationData>>(){}.getType());
+        //return aviationMapper.aviationEntityListToDataList(aviationEntityList);
+        return aviationDataList;
     }
 }
