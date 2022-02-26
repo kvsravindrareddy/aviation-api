@@ -3,7 +3,6 @@ package com.ravindra.util;
 import com.ravindra.common.ApiConstants;
 import com.ravindra.config.SFTPConfig;
 import net.schmizz.sshj.SSHClient;
-import net.schmizz.sshj.sftp.FileAttributes;
 import net.schmizz.sshj.sftp.SFTPClient;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
 import net.schmizz.sshj.xfer.FileSystemFile;
@@ -14,7 +13,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.FileSystem;
 
 @Component
 public class SFTPUtil {

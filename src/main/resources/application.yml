@@ -4,6 +4,12 @@ server:
 aviation:
   baseUrl: 'https://api.aviationapi.com/'
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
 sftp:
   host: test.rebex.net
   userName: demo

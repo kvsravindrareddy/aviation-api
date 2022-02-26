@@ -32,10 +32,11 @@ public class AviationService {
      * @return
      */
     public List<AviationData> getAviationData(String icao) {
+        log.info("Begin method getAviationData()");
         List<AviationData> aviationDataList = null;
         //String url = aviationConfig.getBaseUrl()+"/v1/airports?apt="+icao;
         String url = buildAviationUrl(icao);//https://api.aviationapi.com/v1/airports?apt=KSPI
-        log.debug("Aviation Url : "+url);
+        log.debug("Aviation Url : ",url);
         String apiResponse = apiResponse(url);//json string
         if(null!=apiResponse)
         {
@@ -66,11 +67,18 @@ public class AviationService {
      * @return
      */
     private String apiResponse(String url) {
+
         String apiResponse = null;
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
-        if(responseEntity.getStatusCodeValue()>=200 && responseEntity.getStatusCodeValue()<300)
+        try {
+            ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
+            if (responseEntity.getStatusCodeValue() >= 200 && responseEntity.getStatusCodeValue() < 300) {
+                apiResponse = responseEntity.getBody();
+            } else {
+                log.warn("There is no response body");
+            }
+        }catch (Exception e)
         {
-            apiResponse = responseEntity.getBody();
+            log.error("Exception occurred"+e.getMessage());
         }
         return apiResponse;
     }
